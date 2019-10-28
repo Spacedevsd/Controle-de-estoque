@@ -1,0 +1,7 @@
+migrations
+.vscode
+*.sqlite3
+migrations
+Pipfile
+Pipfile.lock
+.gitignore

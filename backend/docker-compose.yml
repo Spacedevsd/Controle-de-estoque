@@ -1,0 +1,29 @@
+version: "3.3"
+
+services:
+  app:
+    build: .
+    command: flask run
+    container_name: "app-service"
+    env_file: .env
+    ports:
+      - "3001"
+    volumes:
+      - ".:/usr/src/app"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`estoque.spacedevs.info`)"
+      - "traefik.http.routers.app.entrypoints=web"
+  traefik:
+    image: "traefik:v2.0"
+    container_name: "traefik"
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"

@@ -1,0 +1,9 @@
+.vscode
+Dockerfile
+migrations
+.dockerignore
+.gitignore
+*.sqlite3
+*.sqlite
+Pipfile
+Pipfile.lock

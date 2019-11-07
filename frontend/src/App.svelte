@@ -18,7 +18,7 @@
   let products = [];
 
   let title = "";
-  const server = "http://localhost:3001/api/v1";
+  const server = "http://api.spacedevs.info/api/v1";
 
   onMount(async () => {
     const response = await (await fetch(`${server}/products`)).json();

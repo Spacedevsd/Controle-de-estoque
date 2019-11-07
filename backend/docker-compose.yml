@@ -1,0 +1,43 @@
+version: "3.3"
+
+services:
+  app:
+    build: .
+    command: gunicorn --bind 0.0.0.0:3001 main:app
+    container_name: "app-service"
+    env_file: .env
+    volumes:
+      - ".:/usr/src/app"
+    ports:
+      - "3001"
+    depends_on:
+      - db
+    links:
+      - db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`api.spacedevs.info`)"
+      - "traefik.http.routers.app.entrypoints=web"
+  
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: flask_estoque
+
+  traefik:
+    image: "traefik:v2.0"
+    container_name: "traefik-service"
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+

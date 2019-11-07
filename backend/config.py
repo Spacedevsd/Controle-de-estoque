@@ -9,6 +9,11 @@ class Config:
 class Development(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'dev.sqlite3')
 
+class Production(Config):
+    SQLALCHEMY_DATABASE_URI = "postgresql://docker:docker@db/flask_estoque"
+
+
 config = dict(
-    development=Development
+    development=Development,
+    production=Production,
 )
